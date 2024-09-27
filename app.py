@@ -7,6 +7,13 @@ import tempfile
 # Path to your cookies file, assuming it is in the same folder as the script
 COOKIES_FILE = 'cookies.txt'
 
+st.title("Transcripción de Audio de YouTube")
+
+
+youtube_url = st.text_input("Ingrese la URL de YouTube")
+ffmpeg_path = 'ffmpeg/bin/ffmpeg.exe'
+@st.cache_resource
+
 def ensure_audio_file_absent(audio_filename):
     if os.path.exists(audio_filename):
         os.remove(audio_filename)
@@ -60,15 +67,11 @@ def run_transcription(audio_filename, model):
     except Exception as e:
         return f"Ocurrió un error durante la transcripción: {e}"
 
-@st.cache_resource
+
 def load_whisper_model():
     return whisper.load_model("base")
 
-# Streamlit UI
-st.title("Transcripción de Audio de YouTube")
 
-youtube_url = st.text_input("Ingrese la URL de YouTube")
-ffmpeg_path = 'ffmpeg/bin/ffmpeg.exe'
 
 if st.button("Transcribir"):
     if youtube_url:
